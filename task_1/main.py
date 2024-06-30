@@ -75,6 +75,9 @@ def task_5(manager):
     print(GREEN_COLOR + "Available users:".upper() + WHITE_COLOR)
     print_items(users)
     user_id = input(YELLOW_COLOR + "Enter user id: " + WHITE_COLOR)
+    statuses = manager.get_all_statuses()
+    print(GREEN_COLOR + "Available statuses:".upper() + WHITE_COLOR)
+    print_items(statuses)
     input_status = input(YELLOW_COLOR + "Enter status: " + WHITE_COLOR)
     status = manager.get_status_by_name(input_status)
     if not status:
@@ -83,7 +86,7 @@ def task_5(manager):
     print(GREEN_COLOR + "Add a new task to user with id".upper() + str(user_id) +
           " with ".upper() + str(status) + WHITE_COLOR)
     manager.add_task_to_user(user_id, status.id)
-    tasks = manager.get_tasks_of_user(status.id)
+    tasks = manager.get_tasks_of_user(user_id)
     print_items(tasks)
 
 
@@ -155,8 +158,15 @@ def task_12(manager):
     print_items(tasks)
 
 
-def task_13(manager, status="In Progress"):
+def task_13(manager):
     """Get users with task with status."""
+    available_statuses = manager.get_all_statuses()
+    print(GREEN_COLOR + "Available statuses:".upper() + WHITE_COLOR)
+    print_items(available_statuses)
+    status = input(YELLOW_COLOR + "Enter status: " + WHITE_COLOR)
+    if not status:
+        status = "In Progress"
+
     print(GREEN_COLOR + "Get users with task with status: ".upper() + status + WHITE_COLOR)
     users = manager.get_users_by_task_status(status)
     print_items(users)
@@ -170,12 +180,22 @@ def task_14(manager):
 
 
 def main():
+    postgres_user = input(YELLOW_COLOR + "Enter postgres user: " + WHITE_COLOR)
+    if not postgres_user:
+        print(RED_COLOR + "No postgres user was provided".upper() + WHITE_COLOR)
+        print(GREEN_COLOR + "Default postgres user will be used".upper() + WHITE_COLOR)
+        postgres_user = POSTGRES_USER
+    postgres_password = input(YELLOW_COLOR + "Enter postgres password: " + WHITE_COLOR)
+    if not postgres_password:
+        print(RED_COLOR + "No postgres password was provided".upper() + WHITE_COLOR)
+        print(GREEN_COLOR + "Default postgres password will be used".upper() + WHITE_COLOR)
+        postgres_password = POSTGRES_PASSWORD
     db_engine = DBEngineFactory.get_engine(
         db_type="postgres",
         host=POSTGRES_HOST,
         port=POSTGRES_PORT,
-        user=POSTGRES_USER,
-        password=POSTGRES_PASSWORD,
+        user=postgres_user,
+        password=postgres_password,
         db=DB_NAME,
         echo=False
     )
