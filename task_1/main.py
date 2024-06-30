@@ -26,12 +26,13 @@ def print_items(items):
 
 
 def task_1(manager):
-    """Get random user and all tasks of this user."""
-    print(GREEN_COLOR + "Get random user:".upper() + WHITE_COLOR)
-    random_user = manager.get_random_user()
-    print(random_user)
+    """Get user and all tasks of this user."""
+    users = manager.get_all_users()
+    print(GREEN_COLOR + "Available users:".upper() + WHITE_COLOR)
+    print_items(users)
+    user_id = input(YELLOW_COLOR + "Enter user id: " + WHITE_COLOR)
     print("Get all tasks of this user:".upper())
-    tasks = manager.get_tasks_of_user(random_user.id)
+    tasks = manager.get_tasks_of_user(user_id)
     print_items(tasks)
 
 
@@ -50,41 +51,63 @@ def task_2(manager):
 
 def task_3(manager):
     """Update task status"""
+    tasks = manager.get_all_tasks()
+    print(GREEN_COLOR + "Available tasks:".upper() + WHITE_COLOR)
+    print_items(tasks)
+    task_id = input(YELLOW_COLOR + "Enter task id: " + WHITE_COLOR)
+    new_status = input(YELLOW_COLOR + "Enter new status: " + WHITE_COLOR)
+    manager.update_task_status(task_id, new_status)
+    task = manager.get_task_by_id(task_id)
+    print(GREEN_COLOR + "Task was updated".upper() + WHITE_COLOR)
+    print(task)
 
 
 def task_4(manager):
-
+    """Get all users without tasks."""
     print(GREEN_COLOR + "Get all users without tasks:".upper() + WHITE_COLOR)
     users = manager.get_all_users_without_tasks()
     print_items(users)
 
 
 def task_5(manager):
-    random_user = manager.get_random_user()
-    random_status = manager.get_random_status()
-    print(GREEN_COLOR + "Add a new task to ".upper() + str(random_user) + " with ".upper() + str(random_status) + WHITE_COLOR)
-    manager.add_task_to_user(random_user.id, random_status.id)
-    tasks = manager.get_tasks_of_user(random_user.id)
+    """Add a new task  with status to user."""
+    users = manager.get_all_users()
+    print(GREEN_COLOR + "Available users:".upper() + WHITE_COLOR)
+    print_items(users)
+    user_id = input(YELLOW_COLOR + "Enter user id: " + WHITE_COLOR)
+    input_status = input(YELLOW_COLOR + "Enter status: " + WHITE_COLOR)
+    status = manager.get_status_by_name(input_status)
+    if not status:
+        print(RED_COLOR + "No status found".upper() + WHITE_COLOR)
+        return
+    print(GREEN_COLOR + "Add a new task to user with id".upper() + str(user_id) +
+          " with ".upper() + str(status) + WHITE_COLOR)
+    manager.add_task_to_user(user_id, status.id)
+    tasks = manager.get_tasks_of_user(status.id)
     print_items(tasks)
 
 
 def task_6(manager):
+    """Get all tasks these are not done."""
     print(GREEN_COLOR + "Get all tasks these are not done".upper() + WHITE_COLOR)
     not_done_tasks = manager.get_tasks_not_done()
     print(not_done_tasks)
 
 
 def task_7(manager):
-    print(GREEN_COLOR + "Get random task".upper() + WHITE_COLOR)
-    random_task = manager.get_random_task()
-    print(random_task)
+    """Delete specified task."""
+    print(GREEN_COLOR + "Available tasks:".upper() + WHITE_COLOR)
+    tasks = manager.get_all_tasks()
+    print_items(tasks)
+    task_id = input(YELLOW_COLOR + "Enter task id: " + WHITE_COLOR)
     print(GREEN_COLOR + "Delete this task".upper() + WHITE_COLOR)
-    manager.delete_task(random_task.id)
+    manager.delete_task(task_id)
     tasks = manager.get_all_tasks()
     print_items(tasks)
 
 
 def task_8(manager):
+    """Get all users with email pattern."""
     email_pattern = input(YELLOW_COLOR + "Enter email pattern: " + WHITE_COLOR)
     if not email_pattern:
         email_pattern = "gmail.com"
@@ -94,16 +117,21 @@ def task_8(manager):
 
 
 def task_9(manager):
-    random_user = manager.get_random_user()
-    print(GREEN_COLOR + "Update user".upper() + str(random_user) + WHITE_COLOR)
+    """Update user."""
+    print(GREEN_COLOR + "Available users:".upper() + WHITE_COLOR)
+    users = manager.get_all_users()
+    print_items(users)
+    user_id = input(YELLOW_COLOR + "Enter user id: " + WHITE_COLOR)
+    print(GREEN_COLOR + "Update user ".upper() + str(user_id) + WHITE_COLOR)
     new_full_name = input(YELLOW_COLOR + "Enter new full name: " + WHITE_COLOR)
     new_email = input(YELLOW_COLOR + "Enter new email: " + WHITE_COLOR)
-    manager.update_user(random_user.id, new_full_name, new_email)
+    manager.update_user(user_id, new_full_name, new_email)
     print(GREEN_COLOR + "User was updated" + WHITE_COLOR)
-    print(manager.get_user_by_id(random_user.id))
+    print(manager.get_user_by_id(user_id))
 
 
 def task_10(manager):
+    """Get number of tasks for each status."""
     print(GREEN_COLOR + "Get number of tasks for each status".upper() + WHITE_COLOR)
     tasks_number = manager.get_number_of_tasks_for_each_status()
     for number in tasks_number:
@@ -111,6 +139,7 @@ def task_10(manager):
 
 
 def task_11(manager):
+    """Get tasks of users with email pattern."""
     print(GREEN_COLOR + "Get tasks of users with email pattern".upper() + WHITE_COLOR)
     pattern = input(YELLOW_COLOR + "Enter email pattern: " + WHITE_COLOR)
     if not pattern:
@@ -120,18 +149,21 @@ def task_11(manager):
 
 
 def task_12(manager):
+    """Get all tasks without description."""
     print(GREEN_COLOR + "Get all tasks without description".upper() + WHITE_COLOR)
     tasks = manager.get_tasks_without_description()
     print_items(tasks)
 
 
 def task_13(manager, status="In Progress"):
+    """Get users with task with status."""
     print(GREEN_COLOR + "Get users with task with status: ".upper() + status + WHITE_COLOR)
     users = manager.get_users_by_task_status(status)
     print_items(users)
 
 
 def task_14(manager):
+    """Get all users with task counts."""
     print(GREEN_COLOR + "Get all users with task counts".upper() + WHITE_COLOR)
     users = manager.get_users_with_task_counts()
     print_items(users)
@@ -148,21 +180,75 @@ def main():
         echo=False
     )
     database_manager = DatabaseManager(db_engine)
-    database_manager.setup(5, ["New", "In Progress", "Done"], 4)
-    task_1(database_manager)
-    task_2(database_manager)
-    task_3(database_manager)
-    task_4(database_manager)
-    task_5(database_manager)
-    task_6(database_manager)
-    task_7(database_manager)
-    task_8(database_manager)
-    task_9(database_manager)
-    task_10(database_manager)
-    task_11(database_manager)
-    task_12(database_manager)
-    task_13(database_manager)
-    task_14(database_manager)
+    users_number = input(YELLOW_COLOR + "Enter number of users these would be added to database: " + WHITE_COLOR)
+    if not users_number:
+        print(RED_COLOR + "No correct number of users were provided".upper() + WHITE_COLOR)
+        print(GREEN_COLOR + "Default number of users will be used".upper() + WHITE_COLOR)
+        users_number = 10
+    else:
+        users_number = int(users_number)
+
+    status_list = input(YELLOW_COLOR + "Enter list of statuses separated by comma: " + WHITE_COLOR)
+    if not status_list:
+        print(RED_COLOR + "No correct statuses were provided".upper() + WHITE_COLOR)
+        print(GREEN_COLOR + "Default statuses will be used".upper() + WHITE_COLOR)
+        status_list = ["New", "In Progress", "Done"]
+    else:
+        status_list = status_list.split(",")
+        status_list = [status.capitalize() for status in status_list]
+
+    task_number = input(YELLOW_COLOR + "Enter number of tasks these would be added to database: " + WHITE_COLOR)
+    if not task_number:
+        print(RED_COLOR + "No correct number of tasks were provided".upper() + WHITE_COLOR)
+        print(GREEN_COLOR + "Default number of tasks will be used".upper() + WHITE_COLOR)
+        task_number = 10
+    else:
+        task_number = int(task_number)
+    print(GREEN_COLOR + "Setup database...".upper() + WHITE_COLOR)
+    database_manager.setup(users_number, status_list, task_number)
+    home_task_dict = {
+        1: task_1,
+        2: task_2,
+        3: task_3,
+        4: task_4,
+        5: task_5,
+        6: task_6,
+        7: task_7,
+        8: task_8,
+        9: task_9,
+        10: task_10,
+        11: task_11,
+        12: task_12,
+        13: task_13,
+        14: task_14
+    }
+    while True:
+        try:
+            print(GREEN_COLOR + "Available home tasks:".upper() + WHITE_COLOR)
+            for key, value in home_task_dict.items():
+                print(f"{key}: {value.__doc__}")
+            task_number = input(YELLOW_COLOR + "Enter task number: " + WHITE_COLOR)
+            if not task_number:
+                print(RED_COLOR + "No task number was provided".upper() + WHITE_COLOR)
+                print(GREEN_COLOR + "Exit".upper() + WHITE_COLOR)
+                break
+            task_number = int(task_number)
+            if task_number not in home_task_dict:
+                print(RED_COLOR + "No task with this number".upper() + WHITE_COLOR)
+                print(GREEN_COLOR + "Exit".upper() + WHITE_COLOR)
+                break
+            home_task_dict[task_number](database_manager)
+            cont = input(YELLOW_COLOR + "Do you want to continue? (yes/no): " + WHITE_COLOR)
+            if cont.lower() in ["no", "n"]:
+                print(GREEN_COLOR + "Exit".upper() + WHITE_COLOR)
+                break
+        except KeyboardInterrupt:
+            print(RED_COLOR + "Exit".upper() + WHITE_COLOR)
+            break
+        except ValueError as e:
+            print(RED_COLOR + f"Error: {e}".upper() + WHITE_COLOR)
+            print(GREEN_COLOR + "Exit".upper() + WHITE_COLOR)
+            break
 
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@ class Users(Base):
     tasks = relationship("Tasks", back_populates="users", cascade="save-update, merge, delete")
 
     def __repr__(self):
-        return f"User ({self.full_name}, {self.email})"
+        return f"User ({self.id}, {self.full_name}, {self.email})"
 
 
 class Status(Base):
@@ -28,7 +28,7 @@ class Status(Base):
     tasks = relationship("Tasks", back_populates="status")
 
     def __repr__(self):
-        return f"Status ({self.name})"
+        return f"Status ({self.id}, {self.name})"
 
 
 class Tasks(Base):
@@ -43,7 +43,7 @@ class Tasks(Base):
     status = relationship("Status", back_populates="tasks")
 
     def __repr__(self):
-        return f"Task ({self.title}, {self.description}, {self.status_id})"
+        return f"Task ({self.id}, {self.title}, {self.description}, {self.status_id})"
 
 
 class DatabaseManager:
