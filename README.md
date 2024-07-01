@@ -58,9 +58,6 @@ The manager accepts the document in the next format:
 ```
 
 If main.py runs as script it would expect URI and password for Mongo DB as input params.
-```bash
-python3 main.py --uri mongodb://localhost:27017/ --password mypassword
-```
 After that the script creates a new database "cats_db" and collection "cats" in it, and seeds the collection with 10 documents.
 After that it prints the list of created documents and clears the collection.
 ## Installation
@@ -87,4 +84,15 @@ cd task1
 ```
 ```bash
 python3 main.py
+```
+### Task 2
+As a script
+```bash
+python3 main.py --uri mongodb://localhost:27017/ --password mypassword
+```
+As a module
+```python
+from task2.main import MongoManager
+
+manager = MongoManager.connect(uri, password)
 ```
