@@ -6,7 +6,7 @@ The script uses the following dependencies:
  - **psycopg2** - PostgreSQL database adapter for Python
  - **sqlalchemy** - SQL toolkit and Object-Relational Mapping (ORM) library for Python
  - **faker** - Faker is a Python package that generates fake data
- - 
+ - **pymongo** - Python driver for MongoDB
 ## Tasks
 ### Task 1
 The script connects to the local Postgres database and creates (if it doesn't exist) 3 tables:
