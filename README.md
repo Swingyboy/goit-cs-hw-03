@@ -29,6 +29,40 @@ After initialization, the script displays the available tasks from homework and 
  - **Task 12** - The script displays the list of tasks without description.
  - **Task 13** - The script requests the status name and displays the list of tasks with this status.
  - **Task 14** - The script displays the task count for each user.
+### Task 2
+The script implements Mongo DB Manager that supports the next commands:
+ - **disconnect** - disconnects from the MongoDB
+ - **connect** - class method for connecting to the MongoDB
+ - **create_db** - creates a new database
+ - **create_collection** - creates a new collection
+ - **add_one** - adds a new document to the collection
+ - **add_many** - adds multiple documents to the collection
+ - **get_all** - gets all documents from the collection
+ - **get_by_id** - gets the document by id
+ - **get_by_name** - gets the document by name
+ - **update_by_id** - updates the document by id
+ - **update_by_name** - updates the document by name
+ - **delete_by_id** - deletes the document by id
+ - **delete_by_name** - deletes the document by name
+ - **delete_all** - deletes all documents from the collection
+ - **delete_collection** - deletes the collection
+ - **delete_db** - deletes the database
+
+The manager accepts the document in the next format:
+```json
+{
+    "name": "Tom",
+    "age": 2,
+    "city": ["fat", "lazy"]
+}
+```
+
+If main.py runs as script it would expect URI and password for Mongo DB as input params.
+```bash
+python3 main.py --uri mongodb://localhost:27017/ --password mypassword
+```
+After that the script creates a new database "cats_db" and collection "cats" in it, and seeds the collection with 10 documents.
+After that it prints the list of created documents and clears the collection.
 ## Installation
 1. Clone the repository
 ```bash
