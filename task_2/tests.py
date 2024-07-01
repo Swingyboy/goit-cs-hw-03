@@ -4,6 +4,7 @@ from main import MongoDBManager, seed_db, clear_db
 PASSWORD = "lNK5l8gTye5ccE9D"
 URI = f"mongodb+srv://kedonosec:<password>@sbe-cluster.0wp1rac.mongodb.net/?appName=sbe-cluster"
 
+
 class TestMongoDBManager(TestCase):
     def setUp(self) -> None:
         self.db_manager = MongoDBManager.connect(URI, PASSWORD)
@@ -116,6 +117,19 @@ class TestMongoDBManager(TestCase):
         self.db_manager.delete_by_name(data["name"])
         self.assertEqual(len(self.db_manager.get_all()), 0)
 
-
-
-
+    def test_delete_all(self):
+        data = [
+            {
+                "name": "John",
+                "age": 2,
+                "features": ["smart", "handsome"]
+            },
+            {
+                "name": "Jane",
+                "age": 3,
+                "features": ["smart", "beautiful"]
+            }
+        ]
+        self.db_manager.add_many(data)
+        self.db_manager.delete_all()
+        self.assertEqual(len(self.db_manager.get_all()), 0)

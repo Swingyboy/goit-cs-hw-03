@@ -1,13 +1,9 @@
+import argparse
 from bson import ObjectId
 from pymongo.mongo_client import MongoClient
-from pymongo.collection import Collection
-from pymongo.errors import CollectionInvalid, InvalidName, InvalidOperation, OperationFailure
+from pymongo.errors import CollectionInvalid, OperationFailure
 import random
 from typing import List
-
-
-PASSWORD = "lNK5l8gTye5ccE9D"
-URI = f"mongodb+srv://kedonosec:<password>@sbe-cluster.0wp1rac.mongodb.net/?appName=sbe-cluster"
 
 
 class MongoConnector:
@@ -191,7 +187,13 @@ def clear_db(db_manager):
 
 
 def main():
-    db_manager = MongoDBManager.connect(URI, PASSWORD)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--uri", type=str, required=True, help="MongoDB URI")
+    parser.add_argument("--password", type=str, required=True, help="MongoDB password")
+    args = parser.parse_args()
+    uri = args.uri
+    password = args.password
+    db_manager = MongoDBManager.connect(uri, password)
     db_manager.create_db("cats_db")
     db_manager.create_collection("cats")
     seed_db(db_manager, 10)
